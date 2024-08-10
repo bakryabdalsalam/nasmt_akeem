@@ -1,6 +1,9 @@
+/* Import Montserrat Font */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
 /* General Styles */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Montserrat', Arial, sans-serif;
   background-color: #f4f4f4;
   margin: 0;
   padding: 0;
@@ -20,6 +23,7 @@ body {
   text-align: center;
   box-sizing: border-box;
   margin: 0 10px;
+  overflow-x: auto;
 }
 
 /* Header Styles */
@@ -31,7 +35,7 @@ body {
 }
 
 .logo {
-  max-width: 500px; /* Increase the max-width to make the logo bigger */
+  max-width: 300px;
   margin-bottom: 10px;
 }
 
@@ -65,6 +69,11 @@ select {
   box-sizing: border-box;
 }
 
+input::placeholder,
+select {
+  color: #aaa;
+}
+
 select {
   appearance: none;
   background-color: white;
@@ -76,7 +85,7 @@ select {
 
 button {
   padding: 12px;
-  background-color: #007bff;
+  background-color: #36ac9d; /* Updated button color */
   color: white;
   border: none;
   border-radius: 4px;
@@ -86,21 +95,27 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #3771c2; /* Updated hover color */
 }
 
 .error {
-  color: red;
-  margin-top: -15px;
-  margin-bottom: 15px;
-  display: block;
+  color: #ff0000; /* Red color for error messages */
+  margin-top: -10px;
+  margin-bottom: 10px;
+  text-align: left;
+  font-size: 12px;
 }
 
 /* Table Styles */
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  min-width: 600px;
 }
 
 table th,
@@ -114,21 +129,75 @@ table th {
   background-color: #f4f4f4;
 }
 
-/* Select Filter Styles */
+/* Filter and Search Container */
+.filter-search-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.search-field,
+.filter-field {
+  flex: 1;
+  margin: 5px;
+  min-width: 250px;
+}
+
+#searchInput {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
+
+#searchInput::placeholder {
+  color: #aaa;
+}
+
 #customerServiceFilter {
-  padding: 12px;
-  margin-bottom: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  width: 100%;
-  box-sizing: border-box;
   appearance: none;
   background-color: white;
   background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="16"><path fill="none" stroke="%23333" stroke-width="2" d="M1 4l5 6 5-6"/></svg>');
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 12px 16px;
+}
+
+/* Export Button Styles */
+.export-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+#exportButton {
+  padding: 10px 20px;
+  background-color: #36ac9d; /* Updated button color */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#exportButton:hover {
+  background-color: #3771c2; /* Updated hover color */
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+}
+
+.checkbox-container .checkmark {
+  display: none; /* Hide the custom checkmark span, since it's not necessary with this approach */
 }
 
 /* Responsive Styles */
@@ -153,11 +222,6 @@ table th {
     padding: 15px;
   }
 
-  .logo {
-    max-width: 300px; /* Increase the max-width to make the logo bigger */
-    margin-bottom: 10px;
-  }
-
   input,
   button,
   select {
@@ -174,11 +238,6 @@ table th {
     padding: 10px;
   }
 
-  .logo {
-    max-width: 300px; /* Increase the max-width to make the logo bigger */
-    margin-bottom: 10px;
-  }
-
   input,
   button,
   select {
@@ -193,5 +252,14 @@ table th {
   table td {
     padding: 8px;
     font-size: 12px;
+  }
+
+  .filter-search-container {
+    flex-direction: column;
+  }
+
+  .search-field,
+  .filter-field {
+    min-width: 100%;
   }
 }

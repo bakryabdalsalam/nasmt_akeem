@@ -1,33 +1,56 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const usersTable = document
-    .getElementById("usersTable")
-    .querySelector("tbody");
+  const usersTable = document.getElementById("usersTable").querySelector("tbody");
   const exportButton = document.getElementById("exportButton");
-  const customerServiceFilter = document.getElementById(
-    "customerServiceFilter"
-  );
+  const customerServiceFilter = document.getElementById("customerServiceFilter");
+  const searchInput = document.getElementById("searchInput");
+  let currentPage = 1;
+  const limit = 10;
+  let loading = false;
+  let totalUsers = 0;
 
-  async function loadRegisteredUsers(filter = "") {
-    const response = await fetch("/api/users");
-    const users = await response.json();
-    usersTable.innerHTML = "";
+  async function loadRegisteredUsers(filter = "", searchTerm = "", page = 1) {
+    if (loading) return;
 
-    const filteredUsers = users.filter(
-      (user) => filter === "" || user.customerService === filter
-    );
+    loading = true;
+    let query = `/api/users?customerService=${filter}&page=${page}&limit=${limit}`;
+    if (searchTerm) {
+      query += `&search=${encodeURIComponent(searchTerm)}`;
+    }
 
-    filteredUsers.forEach((user) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${user.name}</td>
-        <td>${user.phone}</td>
-        <td>${user.id}</td>
-        <td>${user.nationalities}</td>
-        <td>${user.customerService}</td>
-        <td>${user.prizeDraw ? "نعم" : "لا"}</td>
-      `;
-      usersTable.appendChild(row);
-    });
+    const response = await fetch(query);
+    const { users, total } = await response.json();
+    totalUsers = total;
+
+    if (page === 1) {
+      usersTable.innerHTML = ""; // Clear table on new search/filter
+    }
+
+    if (users.length === 0 && page === 1) {
+      usersTable.innerHTML = "<tr><td colspan='7'>لا توجد نتائج.</td></tr>";
+    } else {
+      users.forEach((user) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${user.number}</td>
+          <td>${user.name}</td>
+          <td>${user.phone}</td>
+          <td>${user.id}</td>
+          <td>${user.nationalities}</td>
+          <td>${user.customerService}</td>
+          <td>${user.prizeDraw ? "نعم" : "لا"}</td>
+        `;
+        usersTable.appendChild(row);
+      });
+    }
+
+    loading = false;
+  }
+
+  function handleScroll() {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 && !loading && usersTable.children.length < totalUsers) {
+      currentPage++;
+      loadRegisteredUsers(customerServiceFilter.value, searchInput.value, currentPage);
+    }
   }
 
   function exportToExcel() {
@@ -52,8 +75,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   customerServiceFilter.addEventListener("change", () => {
-    loadRegisteredUsers(customerServiceFilter.value);
+    currentPage = 1;
+    loadRegisteredUsers(customerServiceFilter.value, searchInput.value, currentPage);
   });
+
+  searchInput.addEventListener("input", () => {
+    currentPage = 1;
+    loadRegisteredUsers(customerServiceFilter.value, searchInput.value, currentPage);
+  });
+
+  window.addEventListener("scroll", handleScroll);
 
   loadRegisteredUsers();
   exportButton.addEventListener("click", exportToExcel);

@@ -10,22 +10,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const phone = document.getElementById("phone").value.trim();
     const id = document.getElementById("id").value.trim();
     const nationalities = document.getElementById("nationalities").value.trim();
-    const customerService = document
-      .getElementById("customerService")
-      .value.trim();
+    const customerService = document.getElementById("customerService").value.trim();
     const prizeDraw = document.getElementById("prizeDraw").checked;
 
-    const errors = validateForm(
-      name,
-      phone,
-      id,
-      nationalities,
-      customerService
-    );
+    const errors = validateForm(name, phone, id, nationalities, customerService);
     if (errors.length > 0) {
       errors.forEach(
-        (error) =>
-          (document.getElementById(error.field).textContent = error.message)
+        (error) => (document.getElementById(error.field).textContent = error.message)
       );
       return;
     }
@@ -70,10 +61,10 @@ document.addEventListener("DOMContentLoaded", function () {
       errors.push({ field: "nameError", message: "الاسم مطلوب." });
     }
 
-    if (!/^\d{10}$/.test(phone)) {
+    if (!/^05\d{8}$/.test(phone)) {
       errors.push({
         field: "phoneError",
-        message: "رقم الجوال يجب أن يتكون من 10 أرقام.",
+        message: "رقم الجوال يجب أن يبدأ بـ 05 ويتكون من 10 أرقام.",
       });
     }
 

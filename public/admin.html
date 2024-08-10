@@ -1,24 +1,43 @@
 <!DOCTYPE html>
 <html lang="ar">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>إدارة البيانات</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="container">
-      <h1>قائمة المسجلين</h1>
-      <label for="customerServiceFilter">فلتر حسب موظف خدمة العملاء:</label>
-      <select id="customerServiceFilter">
-        <option value="">الكل</option>
-        <option value="Employee1">Employee1</option>
-        <option value="Employee2">Employee2</option>
-        <option value="Employee3">Employee3</option>
-      </select>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إدارة البيانات</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>قائمة المسجلين</h1>
+
+    <!-- Export Button at the Top -->
+    <div class="export-container">
+      <button id="exportButton">تصدير إلى Excel</button>
+    </div>
+
+    <!-- Filter and Search Container -->
+    <div class="filter-search-container">
+      <div class="search-field">
+        <label for="searchInput">البحث:</label>
+        <input type="text" id="searchInput" placeholder="ابحث بالاسم، رقم الجوال، رقم الهوية، الرقم، أو الجنسيات المطلوبة" />
+      </div>
+
+      <div class="filter-field">
+        <label for="customerServiceFilter">فلتر حسب موظف خدمة العملاء:</label>
+        <select id="customerServiceFilter">
+          <option value="">الكل</option>
+          <option value="Employee1">Employee1</option>
+          <option value="Employee2">Employee2</option>
+          <option value="Employee3">Employee3</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-container">
       <table id="usersTable">
         <thead>
           <tr>
+            <th>الرقم</th>
             <th>الاسم</th>
             <th>رقم الجوال</th>
             <th>رقم الهوية السعودية</th>
@@ -29,8 +48,8 @@
         </thead>
         <tbody></tbody>
       </table>
-      <button id="exportButton">تصدير إلى Excel</button>
     </div>
-    <script src="scripts/admin.js"></script>
-  </body>
+  </div>
+  <script src="scripts/admin.js"></script>
+</body>
 </html>

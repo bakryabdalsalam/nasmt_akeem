@@ -1,56 +1,60 @@
 <!DOCTYPE html>
 <html lang="ar">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>تسجيل الزوار</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <img src="logo.webp" alt="Logo" class="logo" />
-        <h1 class="welcome-text">
-          أهلا بك ... أحصل على عروض نسمةأكيم بادخال بياناتك فى الاسفل
-        </h1>
-      </div>
-      <h1>تسجيل الزوار</h1>
-      <form id="registrationForm">
-        <label for="name">الاسم:</label>
-        <input type="text" id="name" name="name" required />
-        <div class="error" id="nameError"></div>
-
-        <label for="phone">رقم الجوال:</label>
-        <input type="text" id="phone" name="phone" required />
-        <div class="error" id="phoneError"></div>
-
-        <label for="id">رقم الهوية السعودية:</label>
-        <input type="text" id="id" name="id" required />
-        <div class="error" id="idError"></div>
-
-        <label for="nationalities">الجنسيات المطلوبة:</label>
-        <input type="text" id="nationalities" name="nationalities" required />
-        <div class="error" id="nationalitiesError"></div>
-
-        <label for="customerService">موظف خدمة العملاء:</label>
-        <select id="customerService" name="customerService" required>
-          <option value="">اختر موظف خدمة العملاء</option>
-          <option value="Employee1">Employee1</option>
-          <option value="Employee2">Employee2</option>
-          <option value="Employee3">Employee3</option>
-        </select>
-        <div class="error" id="customerServiceError"></div>
-
-        <label>
-          <input type="checkbox" id="prizeDraw" name="prizeDraw" />
-          أريد الاشتراك في السحب
-        </label>
-
-        <button type="submit">تسجيل</button>
-      </form>
-      <button id="drawPrizeButton">سحب الفائز</button>
-      <div id="winner"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل الزوار</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="logo.webp" alt="Logo" class="logo" />
+      <h1 class="welcome-text">
+        أهلا بك ... أحصل على عروض نسمة أكيم بإدخال بياناتك في الأسفل
+      </h1>
     </div>
-    <script src="scripts/registration.js"></script>
-  </body>
+    <h1>تسجيل الزوار</h1>
+    <form id="registrationForm">
+      <label for="name">الاسم:</label>
+      <input type="text" id="name" name="name" placeholder="أدخل اسمك" required />
+      <div class="error" id="nameError"></div>
+
+      <label for="phone">رقم الجوال:</label>
+      <input type="text" id="phone" name="phone" placeholder="05xxxxxxxx" required />
+      <div class="error" id="phoneError"></div>
+
+      <label for="id">رقم الهوية السعودية:</label>
+      <input type="text" id="id" name="id" placeholder="أدخل رقم الهوية" required />
+      <div class="error" id="idError"></div>
+
+      <label for="nationalities">الجنسيات المطلوبة:</label>
+      <input type="text" id="nationalities" name="nationalities" placeholder="أدخل الجنسيات المطلوبة" required />
+      <div class="error" id="nationalitiesError"></div>
+
+      <label for="customerService">موظف خدمة العملاء:</label>
+      <select id="customerService" name="customerService" required>
+        <option value="">اختر موظف خدمة العملاء</option>
+        <option value="Employee1">Employee1</option>
+        <option value="Employee2">Employee2</option>
+        <option value="Employee3">Employee3</option>
+      </select>
+      <div class="error" id="customerServiceError"></div>
+
+      <label class="checkbox-container">
+        <input type="checkbox" id="prizeDraw" name="prizeDraw">
+        أريد الاشتراك في السحب
+      </label>
+      
+
+      <button type="submit" class="submit-btn">تسجيل</button>
+    </form>
+
+    <!--
+    <button id="drawPrizeButton" class="draw-btn">سحب الفائز</button>
+    <div id="winner" class="winner-display"></div>
+    -->
+  </div>
+  <script src="scripts/registration.js"></script>
+</body>
 </html>
