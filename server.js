@@ -11,8 +11,8 @@ const app = express();
 const port = 3000;
 const publicDir = path.join(__dirname, "public");
 
-const apiRoutes = require("./routes/api");
-const authRoutes = require("./routes/auth");
+const apiRoutes = require("./api/users");
+const authRoutes = require("./api/auth");
 
 app.use(cors());
 app.use(bodyParser.json());
