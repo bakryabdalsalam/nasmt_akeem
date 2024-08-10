@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
       users.forEach((user) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td>${user.number}</td>
+          <td>${user.number !== undefined ? user.number : ''}</td>
           <td>${user.name}</td>
           <td>${user.phone}</td>
           <td>${user.id}</td>

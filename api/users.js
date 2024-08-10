@@ -18,10 +18,42 @@ module.exports = async function handler(req, res) {
     await mongoose.connect(process.env.MONGODB_URI);
 
     if (req.method === 'GET') {
-      const users = await User.find({});
-      res.json(users);
+      const { page = 1, limit = 10, customerService = '', search = '' } = req.query;
+
+      // Build query conditions
+      const queryConditions = {};
+      if (customerService) {
+        queryConditions.customerService = customerService;
+      }
+      if (search) {
+        queryConditions.$or = [
+          { name: { $regex: search, $options: 'i' } },
+          { phone: { $regex: search, $options: 'i' } },
+          { id: { $regex: search, $options: 'i' } },
+          { nationalities: { $regex: search, $options: 'i' } },
+          { number: Number(search) }, // Searching by number directly
+        ];
+      }
+
+      // Calculate total users for pagination
+      const total = await User.countDocuments(queryConditions);
+
+      // Fetch users with pagination and sorting
+      const users = await User.find(queryConditions)
+        .sort({ number: 1 })
+        .skip((page - 1) * limit)
+        .limit(parseInt(limit));
+
+      res.json({ users, total });
     } else if (req.method === 'POST') {
-      const newUser = new User(req.body);
+      // Get the highest number currently in the database
+      const highestNumberUser = await User.findOne().sort('-number').exec();
+      const newNumber = highestNumberUser && highestNumberUser.number ? highestNumberUser.number + 1 : 1;
+
+      const newUser = new User({
+        ...req.body,
+        number: newNumber,
+      });
       await newUser.save();
       res.status(201).json(newUser);
     } else {
