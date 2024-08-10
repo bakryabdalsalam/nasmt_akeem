@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Adel",
+    "phone": "0502627789",
+    "id": "1234567890",
+    "prizeDraw": true
+  },
+  {
+    "name": "أحمد",
+    "phone": "2563987412",
+    "id": "3698521470",
+    "prizeDraw": true
+  },
+  {
+    "name": "ابراهيم",
+    "phone": "3698547120",
+    "id": "3214569870",
+    "prizeDraw": false
+  },
+  {
+    "name": "بكرى على",
+    "phone": "2369851472",
+    "id": "0125874963",
+    "nationalities": "مصرى",
+    "customerService": "على بن أحمد",
+    "prizeDraw": true
+  },
+  {
+    "name": "حسنين",
+    "phone": "2587963140",
+    "id": "9856321470",
+    "nationalities": "مصري",
+    "customerService": "على",
+    "prizeDraw": false
+  },
+  {
+    "name": "fhhj",
+    "phone": "8796542310",
+    "id": "8796542310",
+    "nationalities": "ulhk",
+    "customerService": "Employee1",
+    "prizeDraw": false
+  }
+]
