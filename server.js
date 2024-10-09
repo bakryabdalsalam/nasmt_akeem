@@ -4,7 +4,6 @@ const cors = require("cors");
 const path = require("path");
 const session = require("express-session");
 const dotenv = require("dotenv");
-const mongoose = require("mongoose");
 
 dotenv.config(); // Load environment variables
 
@@ -14,21 +13,6 @@ const publicDir = path.join(__dirname, "public");
 
 const apiRoutes = require("./api/users");
 const authRoutes = require("./api/auth");
-
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("Failed to connect to MongoDB:", err));
-
-// Define Employee Schema and Model
-const employeeSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-});
-
-const Employee = mongoose.model("Employee", employeeSchema);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -52,6 +36,33 @@ function ensureAuthenticated(req, res, next) {
     res.redirect("/login.html");
   }
 }
+
+app.use("/api", apiRoutes);
+app.use("/", authRoutes);
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(publicDir, "index.html"));
+});
+
+app.get("/login.html", (req, res) => {
+  res.sendFile(path.join(publicDir, "login.html"));
+});
+
+app.get("/admin.html", ensureAuthenticated, (req, res) => {
+  res.sendFile(path.join(publicDir, "admin.html"));
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
+
+
+// Define Employee Schema and Model
+const employeeSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+});
+
+const Employee = mongoose.model("Employee", employeeSchema);
 
 // API to get employees from MongoDB
 app.get("/api/employees", async (req, res) => {
@@ -87,23 +98,4 @@ app.delete("/api/employees/:id", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Failed to delete employee" });
   }
-});
-
-app.use("/api", apiRoutes);
-app.use("/", authRoutes);
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(publicDir, "index.html"));
-});
-
-app.get("/login.html", (req, res) => {
-  res.sendFile(path.join(publicDir, "login.html"));
-});
-
-app.get("/admin.html", ensureAuthenticated, (req, res) => {
-  res.sendFile(path.join(publicDir, "admin.html"));
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
 });

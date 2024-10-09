@@ -98,3 +98,30 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+document.addEventListener("DOMContentLoaded", async function () {
+  const registrationForm = document.getElementById("registrationForm");
+  const customerServiceSelect = document.getElementById("customerService");
+
+  // Load employees into the dropdown
+  async function loadEmployees() {
+    try {
+      const response = await fetch("/api/employees");
+      const employees = await response.json();
+
+      customerServiceSelect.innerHTML = '<option value="">اختر موظف خدمة العملاء</option>';
+      employees.forEach((employee) => {
+        const option = document.createElement("option");
+        option.value = employee.name;
+        option.textContent = employee.name;
+        customerServiceSelect.appendChild(option);
+      });
+    } catch (err) {
+      console.error("Error loading employees:", err);
+    }
+  }
+
+  loadEmployees();
+  // Rest of the registration.js code...
+});
+

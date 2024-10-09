@@ -89,3 +89,78 @@ document.addEventListener("DOMContentLoaded", function () {
   loadRegisteredUsers();
   exportButton.addEventListener("click", exportToExcel);
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const employeesContainer = document.getElementById("employeesContainer");
+  const addEmployeeForm = document.getElementById("addEmployeeForm");
+
+  // Function to load employees
+  async function loadEmployees() {
+    const response = await fetch("/api/employees");
+    const employees = await response.json();
+    employeesContainer.innerHTML = ""; // Clear current employees
+
+    employees.forEach((employee) => {
+      const div = document.createElement("div");
+      div.classList.add("employee-item");
+      div.innerHTML = `
+        <span>${employee.name}</span>
+        <button onclick="deleteEmployee('${employee._id}')">Delete</button>
+      `;
+      employeesContainer.appendChild(div);
+    });
+  }
+
+  // Function to add a new employee
+  addEmployeeForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    const employeeName = document.getElementById("employeeName").value.trim();
+    if (employeeName === "") {
+      alert("Please enter an employee name.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/employees", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ employeeName }),
+      });
+
+      if (response.ok) {
+        loadEmployees();
+        addEmployeeForm.reset();
+      } else {
+        alert("Failed to add employee.");
+      }
+    } catch (err) {
+      console.error("Error adding employee:", err);
+    }
+  });
+
+  // Function to delete an employee
+  window.deleteEmployee = async function (id) {
+    if (!confirm("Are you sure you want to delete this employee?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/employees/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        loadEmployees();
+      } else {
+        alert("Failed to delete employee.");
+      }
+    } catch (err) {
+      console.error("Error deleting employee:", err);
+    }
+  };
+
+  loadEmployees();
+});
