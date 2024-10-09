@@ -35,13 +35,10 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("تم التسجيل بنجاح!");
         registrationForm.reset();
         clearErrors();
-      })
-      .catch(() => {
-        alert("حدث خطأ أثناء عملية التسجيل.");
       });
   });
 
-  drawPrizeButton?.addEventListener("click", function () {
+  drawPrizeButton.addEventListener("click", function () {
     fetch("/api/users")
       .then((response) => response.json())
       .then((users) => {

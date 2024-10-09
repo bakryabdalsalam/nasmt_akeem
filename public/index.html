@@ -35,6 +35,9 @@
       <label for="customerService">موظف خدمة العملاء:</label>
       <select id="customerService" name="customerService" required>
         <option value="">اختر موظف خدمة العملاء</option>
+        <option value="Employee1">Employee1</option>
+        <option value="Employee2">Employee2</option>
+        <option value="Employee3">Employee3</option>
       </select>
       <div class="error" id="customerServiceError"></div>
 
@@ -42,6 +45,7 @@
         <input type="checkbox" id="prizeDraw" name="prizeDraw">
         أريد الاشتراك في السحب
       </label>
+      
 
       <button type="submit" class="submit-btn">تسجيل</button>
     </form>
@@ -52,26 +56,5 @@
     -->
   </div>
   <script src="scripts/registration.js"></script>
-  <script>
-    // Populate customer service dropdown with employees from MongoDB
-    document.addEventListener("DOMContentLoaded", function () {
-      const customerServiceSelect = document.getElementById("customerService");
-
-      // Fetch employees from the server
-      fetch("/api/employees")
-        .then((response) => response.json())
-        .then((employees) => {
-          employees.forEach((employee) => {
-            const option = document.createElement("option");
-            option.value = employee.name;
-            option.textContent = employee.name;
-            customerServiceSelect.appendChild(option);
-          });
-        })
-        .catch((error) => {
-          console.error("Failed to load customer service employees:", error);
-        });
-    });
-  </script>
 </body>
 </html>
