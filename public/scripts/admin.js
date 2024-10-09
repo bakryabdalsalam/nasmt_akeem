@@ -88,4 +88,65 @@ document.addEventListener("DOMContentLoaded", function () {
 
   loadRegisteredUsers();
   exportButton.addEventListener("click", exportToExcel);
+
+  // Employee management logic
+  const employeeForm = document.getElementById("employeeForm");
+  const employeeList = document.getElementById("employeeList");
+
+  // Load existing employees
+  async function loadEmployees() {
+    const response = await fetch("/api/employees");
+    const employees = await response.json();
+    employeeList.innerHTML = "";
+    customerServiceFilter.innerHTML = "<option value=''>الكل</option>"; // Reset filter
+
+    employees.forEach((employee) => {
+      const li = document.createElement("li");
+      li.textContent = employee.name;
+      li.dataset.id = employee.id;
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "حذف";
+      deleteBtn.onclick = () => deleteEmployee(employee.id);
+      li.appendChild(deleteBtn);
+      employeeList.appendChild(li);
+
+      // Update the customer service filter dropdown
+      const option = document.createElement("option");
+      option.value = employee.name;
+      option.textContent = employee.name;
+      customerServiceFilter.appendChild(option);
+    });
+  }
+
+  // Add employee
+  employeeForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const employeeName = document.getElementById("employeeName").value.trim();
+    if (employeeName === "") return;
+
+    const response = await fetch("/api/employees", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ employeeName }),
+    });
+
+    if (response.ok) {
+      loadEmployees();
+      employeeForm.reset();
+    }
+  });
+
+  // Delete employee
+  async function deleteEmployee(id) {
+    const response = await fetch(`/api/employees/${id}`, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      loadEmployees();
+    }
+  }
+
+  loadEmployees(); // Load on page load
 });
