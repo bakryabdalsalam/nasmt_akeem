@@ -8,6 +8,14 @@
 </head>
 <body>
   <div class="container">
+    <!-- Manage Customer Service Employees at the Top -->
+    <h2>Manage Customer Service Employees</h2>
+    <form id="addEmployeeForm">
+      <input type="text" id="employeeName" placeholder="Enter employee name" required />
+      <button type="submit">Add Employee</button>
+    </form>
+    <div id="employeesContainer"></div>
+
     <h1>قائمة المسجلين</h1>
 
     <!-- Export Button at the Top -->
@@ -50,12 +58,6 @@
       </table>
     </div>
   </div>
-  <h2>Manage Customer Service Employees</h2>
-<form id="addEmployeeForm">
-  <input type="text" id="employeeName" placeholder="Enter employee name" required />
-  <button type="submit">Add Employee</button>
-</form>
-<div id="employeesContainer"></div>
 
   <script src="scripts/admin.js"></script>
 </body>
