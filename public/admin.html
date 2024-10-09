@@ -26,6 +26,9 @@
         <label for="customerServiceFilter">فلتر حسب موظف خدمة العملاء:</label>
         <select id="customerServiceFilter">
           <option value="">الكل</option>
+          <option value="Employee1">Employee1</option>
+          <option value="Employee2">Employee2</option>
+          <option value="Employee3">Employee3</option>
         </select>
       </div>
     </div>
@@ -45,16 +48,6 @@
         </thead>
         <tbody></tbody>
       </table>
-    </div>
-
-    <!-- Employee Management Section -->
-    <div class="employee-management">
-      <h2>إدارة موظفي خدمة العملاء</h2>
-      <form id="employeeForm">
-        <input type="text" id="employeeName" placeholder="أدخل اسم الموظف" required />
-        <button type="submit">إضافة موظف</button>
-      </form>
-      <ul id="employeeList"></ul>
     </div>
   </div>
   <script src="scripts/admin.js"></script>
