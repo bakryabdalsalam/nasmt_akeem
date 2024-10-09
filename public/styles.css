@@ -263,3 +263,40 @@ table th {
     min-width: 100%;
   }
 }
+
+
+#addEmployeeForm {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#addEmployeeForm input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1;
+  font-size: 16px;
+}
+
+#addEmployeeForm button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#addEmployeeForm button:hover {
+  background-color: #45a049;
+}
+
+#employeesContainer {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+}
