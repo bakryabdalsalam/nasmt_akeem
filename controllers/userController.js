@@ -1,47 +1,57 @@
-const fs = require("fs");
-const path = require("path");
-const dataFile = path.join(__dirname, "../data.json");
+const mongoose = require('mongoose');
 
-exports.getAllUsers = (req, res) => {
-  fs.readFile(dataFile, (err, data) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to read data" });
-    }
+// Define User Schema and Model
+const userSchema = new mongoose.Schema({
+  name: String,
+  phone: String,
+  id: String,
+  nationalities: String,
+  customerService: String,
+  prizeDraw: Boolean,
+  number: Number,
+});
 
-    let users = JSON.parse(data);
+const User = mongoose.model('User', userSchema);
 
-    // Optional: Filtering logic on the server side
-    const { search, customerService, page = 1, limit = 10 } = req.query;
+// Function to get all users with optional filtering
+exports.getAllUsers = async (req, res) => {
+  const { search, customerService, page = 1, limit = 10 } = req.query;
 
-    if (search) {
-      users = users.filter(user =>
-        (user.name && user.name.includes(search)) ||
-        (user.phone && user.phone.includes(search)) ||
-        (user.id && user.id.includes(search)) ||
-        (user.nationalities && user.nationalities.includes(search)) ||
-        (user.number && user.number.toString().includes(search))
-      );
-    }
+  const query = {};
 
-    if (customerService) {
-      users = users.filter(user => user.customerService === customerService);
-    }
+  if (search) {
+    query.$or = [
+      { name: { $regex: search, $options: 'i' } },
+      { phone: { $regex: search, $options: 'i' } },
+      { id: { $regex: search, $options: 'i' } },
+      { nationalities: { $regex: search, $options: 'i' } },
+      { number: parseInt(search, 10) },
+    ];
+  }
 
-    // Implement pagination for lazy loading
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const paginatedUsers = users.slice(startIndex, endIndex);
+  if (customerService) {
+    query.customerService = customerService;
+  }
+
+  try {
+    const total = await User.countDocuments(query);
+    const users = await User.find(query)
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
 
     res.json({
-      total: users.length,
+      total,
       page: parseInt(page, 10),
       limit: parseInt(limit, 10),
-      users: paginatedUsers
+      users,
     });
-  });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to retrieve users" });
+  }
 };
 
-exports.addUser = (req, res) => {
+// Function to add a new user
+exports.addUser = async (req, res) => {
   const { name, phone, id, nationalities, customerService, prizeDraw } = req.body;
 
   if (!name || !phone || !id || !nationalities || !customerService) {
@@ -56,33 +66,23 @@ exports.addUser = (req, res) => {
     return res.status(400).json({ error: "ID number must be 10 digits" });
   }
 
-  fs.readFile(dataFile, (err, data) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to read data" });
-    }
-    const users = JSON.parse(data);
+  try {
+    const highestNumber = await User.findOne().sort('-number').exec();
+    const nextNumber = highestNumber ? highestNumber.number + 1 : 1;
 
-    // Generate the next number based on the highest existing number
-    let nextNumber = 1;
-    if (users.length > 0) {
-      const maxNumber = Math.max(...users.map(user => user.number || 0));
-      nextNumber = maxNumber + 1;
-    }
-
-    const newUser = { name, phone, id, nationalities, customerService, prizeDraw, number: nextNumber };
-
-    const isDuplicate = users.some((user) => user.phone === phone);
-    if (isDuplicate) {
-      return res
-        .status(400)
-        .json({ error: "User with this mobile number already exists" });
-    }
-    users.push(newUser);
-    fs.writeFile(dataFile, JSON.stringify(users, null, 2), (err) => {
-      if (err) {
-        return res.status(500).json({ error: "Failed to save data" });
-      }
-      res.status(201).json(newUser);
+    const newUser = new User({
+      name,
+      phone,
+      id,
+      nationalities,
+      customerService,
+      prizeDraw,
+      number: nextNumber,
     });
-  });
+
+    await newUser.save();
+    res.status(201).json(newUser);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to add user" });
+  }
 };
