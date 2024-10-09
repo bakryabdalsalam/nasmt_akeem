@@ -4,7 +4,7 @@ const cors = require("cors");
 const path = require("path");
 const session = require("express-session");
 const dotenv = require("dotenv");
-const fs = require("fs");
+const mongoose = require("mongoose");
 
 dotenv.config(); // Load environment variables
 
@@ -14,6 +14,21 @@ const publicDir = path.join(__dirname, "public");
 
 const apiRoutes = require("./api/users");
 const authRoutes = require("./api/auth");
+
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("Connected to MongoDB"))
+.catch((err) => console.error("Failed to connect to MongoDB:", err));
+
+// Define Employee Schema and Model
+const employeeSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+});
+
+const Employee = mongoose.model("Employee", employeeSchema);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -38,62 +53,40 @@ function ensureAuthenticated(req, res, next) {
   }
 }
 
-// Employee data file
-const employeesFile = path.join(__dirname, "employees.json");
-
-// API to get employees
-app.get("/api/employees", (req, res) => {
-  fs.readFile(employeesFile, (err, data) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to read employees data" });
-    }
-    const employees = JSON.parse(data);
+// API to get employees from MongoDB
+app.get("/api/employees", async (req, res) => {
+  try {
+    const employees = await Employee.find(); // Fetch all employees
     res.json(employees);
-  });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to retrieve employees" });
+  }
 });
 
-// API to add a new employee
-app.post("/api/employees", (req, res) => {
+// API to add a new employee to MongoDB
+app.post("/api/employees", async (req, res) => {
   const { employeeName } = req.body;
   if (!employeeName) {
     return res.status(400).json({ error: "Employee name is required" });
   }
 
-  fs.readFile(employeesFile, (err, data) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to read employees data" });
-    }
-    const employees = JSON.parse(data);
-    const newEmployee = { id: Date.now(), name: employeeName };
-    employees.push(newEmployee);
-
-    fs.writeFile(employeesFile, JSON.stringify(employees, null, 2), (err) => {
-      if (err) {
-        return res.status(500).json({ error: "Failed to save employee" });
-      }
-      res.status(201).json(newEmployee);
-    });
-  });
+  try {
+    const newEmployee = new Employee({ name: employeeName });
+    await newEmployee.save();
+    res.status(201).json(newEmployee);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to add employee" });
+  }
 });
 
-// API to delete an employee
-app.delete("/api/employees/:id", (req, res) => {
-  const { id } = req.params;
-
-  fs.readFile(employeesFile, (err, data) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to read employees data" });
-    }
-    let employees = JSON.parse(data);
-    employees = employees.filter(emp => emp.id != id);
-
-    fs.writeFile(employeesFile, JSON.stringify(employees, null, 2), (err) => {
-      if (err) {
-        return res.status(500).json({ error: "Failed to delete employee" });
-      }
-      res.status(200).json({ message: "Employee deleted" });
-    });
-  });
+// API to delete an employee from MongoDB
+app.delete("/api/employees/:id", async (req, res) => {
+  try {
+    await Employee.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: "Employee deleted" });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete employee" });
+  }
 });
 
 app.use("/api", apiRoutes);
