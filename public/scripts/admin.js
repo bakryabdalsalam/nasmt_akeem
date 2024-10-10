@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     try {
-      const response = await fetch(`/api/employees/${id}`, {
+      const response = await fetch(`/api/employees?id=${id}`, {
         method: "DELETE",
       });
 
