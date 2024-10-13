@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
         div.classList.add("employee-item");
         div.innerHTML = `
           <span>${employee.name}</span>
-          <button onclick="deleteEmployee('${employee._id}')">Delete</button>
+          <button onclick="deleteEmployee('${employee._id}')">حذف</button>
         `;
         employeesContainer.appendChild(div);
       });
