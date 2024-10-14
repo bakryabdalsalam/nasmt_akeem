@@ -1,30 +1,27 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const cors = require("cors");
 const path = require("path");
-const session = require("express-session");
+const cookieSession = require('cookie-session');
 const dotenv = require("dotenv");
 
-dotenv.config(); // Load environment variables
+dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const publicDir = path.join(__dirname, "public");
 
 const apiRoutes = require("./api/users");
 const authRoutes = require("./api/auth");
 
-app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(publicDir));
 
-// Configure session middleware
+// Configure cookie-session middleware
 app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }, // Set to true if using HTTPS
+  cookieSession({
+    name: 'session',
+    keys: [process.env.SESSION_SECRET],
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
   })
 );
 

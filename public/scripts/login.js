@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "same-origin", // Include cookies in the request
       body: JSON.stringify({ username, password }),
     })
       .then((response) => {
