@@ -149,32 +149,44 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 
-const followWarning = document.getElementById("followWarning");
 
-let tiktokClicked = false;
-let snapchatClicked = false;
+document.addEventListener("DOMContentLoaded", async function () {
+  const registrationForm = document.getElementById("registrationForm");
+  const submitButton = registrationForm.querySelector(".submit-btn");
+  const tiktokLink = document.getElementById("tiktokLink");
+  const snapchatLink = document.getElementById("snapchatLink");
+  const followWarning = document.getElementById("followWarning"); // Reference to the warning message
 
-tiktokLink.addEventListener("click", function () {
-  tiktokClicked = true;
-  checkLinksClicked();
-});
+  let tiktokClicked = false;
+  let snapchatClicked = false;
 
-snapchatLink.addEventListener("click", function () {
-  snapchatClicked = true;
-  checkLinksClicked();
-});
+  // Track when TikTok link is clicked
+  tiktokLink.addEventListener("click", function () {
+    tiktokClicked = true;
+    checkLinksClicked();
+  });
 
-function checkLinksClicked() {
-  if (tiktokClicked && snapchatClicked) {
-    submitButton.disabled = false;
-    followWarning.style.display = 'none'; // Hide warning if both links clicked
+  // Track when Snapchat link is clicked
+  snapchatLink.addEventListener("click", function () {
+    snapchatClicked = true;
+    checkLinksClicked();
+  });
+
+  // Enable submit button only if both links are clicked
+  function checkLinksClicked() {
+    if (tiktokClicked && snapchatClicked) {
+      submitButton.disabled = false; // Enable submit button
+      followWarning.style.display = 'none'; // Hide warning if both links are clicked
+    }
   }
-}
-registrationForm.addEventListener("submit", function (event) {
-  if (!tiktokClicked || !snapchatClicked) {
-    event.preventDefault(); // Prevent form submission
-    followWarning.style.display = 'block'; // Show the warning message
-  } else {
-    followWarning.style.display = 'none'; // Hide warning
-  }
+
+  // Add submit event listener to form
+  registrationForm.addEventListener("submit", function (event) {
+    if (!tiktokClicked || !snapchatClicked) {
+      event.preventDefault(); // Prevent form submission
+      followWarning.style.display = 'block'; // Show the warning message
+    }
+  });
 });
+
+
