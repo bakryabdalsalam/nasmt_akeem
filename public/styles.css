@@ -376,3 +376,12 @@ table th {
 .social-links a:last-child i {
   color: #FFFC00; /* Snapchat icon color */
 }
+
+
+button:disabled {
+  background-color: #d3d3d3; /* Light grey background */
+  color: #888888;           /* Grey text */
+  cursor: not-allowed;      /* Change the cursor to 'not-allowed' */
+  opacity: 0.6;             /* Reduce the opacity */
+  border: 1px solid #cccccc; /* Light grey border */
+}
