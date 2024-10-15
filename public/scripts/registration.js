@@ -147,3 +147,34 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   }
 });
+
+
+const followWarning = document.getElementById("followWarning");
+
+let tiktokClicked = false;
+let snapchatClicked = false;
+
+tiktokLink.addEventListener("click", function () {
+  tiktokClicked = true;
+  checkLinksClicked();
+});
+
+snapchatLink.addEventListener("click", function () {
+  snapchatClicked = true;
+  checkLinksClicked();
+});
+
+function checkLinksClicked() {
+  if (tiktokClicked && snapchatClicked) {
+    submitButton.disabled = false;
+    followWarning.style.display = 'none'; // Hide warning if both links clicked
+  }
+}
+registrationForm.addEventListener("submit", function (event) {
+  if (!tiktokClicked || !snapchatClicked) {
+    event.preventDefault(); // Prevent form submission
+    followWarning.style.display = 'block'; // Show the warning message
+  } else {
+    followWarning.style.display = 'none'; // Hide warning
+  }
+});

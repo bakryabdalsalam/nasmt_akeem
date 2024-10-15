@@ -385,3 +385,11 @@ button:disabled {
   opacity: 0.6;             /* Reduce the opacity */
   border: 1px solid #cccccc; /* Light grey border */
 }
+
+
+/* Style for the follow warning */
+.follow-warning {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
