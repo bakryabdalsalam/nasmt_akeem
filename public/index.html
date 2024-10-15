@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>تسجيل الزوار</title>
+  <!-- Include Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -35,25 +37,23 @@
       <label for="customerService">موظف خدمة العملاء:</label>
       <select id="customerService" name="customerService" required>
         <option value="">اختر موظف خدمة العملاء</option>
-        <option value="Employee1">Employee1</option>
-        <option value="Employee2">Employee2</option>
-        <option value="Employee3">Employee3</option>
+        <!-- Employee options will be loaded dynamically -->
       </select>
       <div class="error" id="customerServiceError"></div>
 
-      <label class="checkbox-container">
-        <input type="checkbox" id="prizeDraw" name="prizeDraw">
-        أريد الاشتراك في السحب
-      </label>
-      
+      <!-- Social Media Follow Links -->
+      <div class="social-links">
+        <a href="https://www.tiktok.com/@yourusername" target="_blank" id="tiktokLink">
+          <i class="fab fa-tiktok fa-2x"></i> تابعنا على تيك توك
+        </a>
+        <a href="https://www.snapchat.com/add/yourusername" target="_blank" id="snapchatLink">
+          <i class="fab fa-snapchat fa-2x"></i> تابعنا على سناب شات
+        </a>
+      </div>
 
-      <button type="submit" class="submit-btn">تسجيل</button>
+      <!-- Submit button initially disabled -->
+      <button type="submit" class="submit-btn" disabled>تسجيل</button>
     </form>
-
-    <!--
-    <button id="drawPrizeButton" class="draw-btn">سحب الفائز</button>
-    <div id="winner" class="winner-display"></div>
-    -->
   </div>
   <script src="scripts/registration.js"></script>
 </body>

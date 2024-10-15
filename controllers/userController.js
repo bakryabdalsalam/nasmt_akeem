@@ -1,88 +1,90 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
-// Define User Schema and Model
 const userSchema = new mongoose.Schema({
   name: String,
-  phone: String,
-  id: String,
+  phone: { type: String, unique: true },
+  id: { type: String, unique: true },
   nationalities: String,
   customerService: String,
-  prizeDraw: Boolean,
   number: Number,
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
-// Function to get all users with optional filtering
-exports.getAllUsers = async (req, res) => {
-  const { search, customerService, page = 1, limit = 10 } = req.query;
-
-  const query = {};
-
-  if (search) {
-    query.$or = [
-      { name: { $regex: search, $options: 'i' } },
-      { phone: { $regex: search, $options: 'i' } },
-      { id: { $regex: search, $options: 'i' } },
-      { nationalities: { $regex: search, $options: 'i' } },
-      { number: parseInt(search, 10) },
-    ];
-  }
-
-  if (customerService) {
-    query.customerService = customerService;
-  }
-
+module.exports = async function handler(req, res) {
   try {
-    const total = await User.countDocuments(query);
-    const users = await User.find(query)
-      .skip((page - 1) * limit)
-      .limit(parseInt(limit));
+    await mongoose.connect(process.env.MONGODB_URI);
 
-    res.json({
-      total,
-      page: parseInt(page, 10),
-      limit: parseInt(limit, 10),
-      users,
-    });
-  } catch (err) {
-    res.status(500).json({ error: "Failed to retrieve users" });
-  }
-};
+    if (req.method === 'GET') {
+      const { page = 1, limit = 10, customerService = '', search = '' } = req.query;
 
-// Function to add a new user
-exports.addUser = async (req, res) => {
-  const { name, phone, id, nationalities, customerService, prizeDraw } = req.body;
+      // Build query conditions
+      const queryConditions = {};
+      if (customerService) {
+        queryConditions.customerService = customerService;
+      }
+      if (search) {
+        queryConditions.$or = [
+          { name: { $regex: search, $options: 'i' } },
+          { phone: { $regex: search, $options: 'i' } },
+          { id: { $regex: search, $options: 'i' } },
+          { nationalities: { $regex: search, $options: 'i' } },
+          { number: Number(search) }, // Searching by number directly
+        ];
+      }
 
-  if (!name || !phone || !id || !nationalities || !customerService) {
-    return res.status(400).json({ error: "All fields are required" });
-  }
+      // Calculate total users for pagination
+      const total = await User.countDocuments(queryConditions);
 
-  if (!/^\d{10}$/.test(phone)) {
-    return res.status(400).json({ error: "Phone number must be 10 digits" });
-  }
+      // Fetch users with pagination and sorting
+      const users = await User.find(queryConditions)
+        .sort({ number: 1 })
+        .skip((page - 1) * limit)
+        .limit(parseInt(limit));
 
-  if (!/^\d{10}$/.test(id)) {
-    return res.status(400).json({ error: "ID number must be 10 digits" });
-  }
+      res.json({ users, total });
+    } else if (req.method === 'POST') {
+      const { phone, id } = req.body;
 
-  try {
-    const highestNumber = await User.findOne().sort('-number').exec();
-    const nextNumber = highestNumber ? highestNumber.number + 1 : 1;
+      // Check for existing user
+      const existingUser = await User.findOne({ $or: [{ phone }, { id }] });
+      if (existingUser) {
+        let errorMsg = 'يوجد مستخدم مسجل بهذا ';
+        if (existingUser.phone === phone && existingUser.id === id) {
+          errorMsg += 'رقم الجوال ورقم الهوية.';
+        } else if (existingUser.phone === phone) {
+          errorMsg += 'رقم الجوال.';
+        } else if (existingUser.id === id) {
+          errorMsg += 'رقم الهوية.';
+        } else {
+          errorMsg += 'رقم الجوال أو رقم الهوية.';
+        }
+        return res.status(400).json({ error: errorMsg });
+      }
 
-    const newUser = new User({
-      name,
-      phone,
-      id,
-      nationalities,
-      customerService,
-      prizeDraw,
-      number: nextNumber,
-    });
+      // Get the highest number currently in the database
+      const highestNumberUser = await User.findOne().sort('-number').exec();
+      const newNumber = highestNumberUser && highestNumberUser.number ? highestNumberUser.number + 1 : 1;
 
-    await newUser.save();
-    res.status(201).json(newUser);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to add user" });
+      const newUser = new User({
+        ...req.body,
+        number: newNumber,
+      });
+      await newUser.save();
+      res.status(201).json(newUser);
+    } else {
+      res.setHeader('Allow', ['GET', 'POST']);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
+    }
+  } catch (error) {
+    console.error('Database error:', error);
+    if (error.code === 11000) {
+      // Duplicate key error
+      const field = Object.keys(error.keyValue)[0];
+      res.status(400).json({ error: `Duplicate ${field} detected.` });
+    } else {
+      res.status(500).json({ error: 'Database operation failed' });
+    }
   }
 };

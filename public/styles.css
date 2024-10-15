@@ -340,3 +340,39 @@ table th {
 .employee-item button:hover {
   background-color: #d32f2f;
 }
+
+
+/* Existing styles */
+/* ... (Your existing CSS styles) */
+
+/* Style the social media links */
+.social-links {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.social-links a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #000;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+}
+
+.social-links a i {
+  margin-right: 8px;
+}
+
+.social-links a:hover {
+  color: #007bff;
+}
+
+.social-links a:first-child i {
+  color: #000000; /* TikTok icon color */
+}
+
+.social-links a:last-child i {
+  color: #FFFC00; /* Snapchat icon color */
+}

@@ -1,8 +1,53 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   const registrationForm = document.getElementById("registrationForm");
-  const drawPrizeButton = document.getElementById("drawPrizeButton");
-  const winnerDisplay = document.getElementById("winner");
+  const customerServiceSelect = document.getElementById("customerService");
+  const submitButton = registrationForm.querySelector(".submit-btn");
+  const tiktokLink = document.getElementById("tiktokLink");
+  const snapchatLink = document.getElementById("snapchatLink");
 
+  // Initially disable submit button
+  submitButton.disabled = true;
+
+  let tiktokClicked = false;
+  let snapchatClicked = false;
+
+  tiktokLink.addEventListener("click", function () {
+    tiktokClicked = true;
+    checkLinksClicked();
+  });
+
+  snapchatLink.addEventListener("click", function () {
+    snapchatClicked = true;
+    checkLinksClicked();
+  });
+
+  function checkLinksClicked() {
+    if (tiktokClicked && snapchatClicked) {
+      submitButton.disabled = false;
+    }
+  }
+
+  // Load employees into the dropdown
+  async function loadEmployees() {
+    try {
+      const response = await fetch("/api/employees");
+      const employees = await response.json();
+
+      customerServiceSelect.innerHTML = '<option value="">اختر موظف خدمة العملاء</option>';
+      employees.forEach((employee) => {
+        const option = document.createElement("option");
+        option.value = employee.name;
+        option.textContent = employee.name;
+        customerServiceSelect.appendChild(option);
+      });
+    } catch (err) {
+      console.error("Error loading employees:", err);
+    }
+  }
+
+  loadEmployees();
+
+  // Form submission
   registrationForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
@@ -11,7 +56,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const id = document.getElementById("id").value.trim();
     const nationalities = document.getElementById("nationalities").value.trim();
     const customerService = document.getElementById("customerService").value.trim();
-    const prizeDraw = document.getElementById("prizeDraw").checked;
+
+    clearErrors();
 
     const errors = validateForm(name, phone, id, nationalities, customerService);
     if (errors.length > 0) {
@@ -21,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const user = { name, phone, id, nationalities, customerService, prizeDraw };
+    const user = { name, phone, id, nationalities, customerService };
 
     fetch("/api/users", {
       method: "POST",
@@ -30,26 +76,29 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       body: JSON.stringify(user),
     })
-      .then((response) => response.json())
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Unknown error');
+        }
+        return response.json();
+      })
       .then(() => {
         alert("تم التسجيل بنجاح!");
         registrationForm.reset();
         clearErrors();
-      });
-  });
-
-  drawPrizeButton.addEventListener("click", function () {
-    fetch("/api/users")
-      .then((response) => response.json())
-      .then((users) => {
-        const eligibleForDraw = users.filter((user) => user.prizeDraw);
-
-        if (eligibleForDraw.length > 0) {
-          const winner =
-            eligibleForDraw[Math.floor(Math.random() * eligibleForDraw.length)];
-          winnerDisplay.textContent = `الفائز: ${winner.name} - ${winner.phone} - ${winner.id}`;
+        submitButton.disabled = true; // Disable submit button again
+        tiktokClicked = false;
+        snapchatClicked = false;
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        if (errorMessage.includes('phone')) {
+          document.getElementById('phoneError').textContent = 'رقم الجوال موجود بالفعل.';
+        } else if (errorMessage.includes('ID') || errorMessage.includes('id')) {
+          document.getElementById('idError').textContent = 'رقم الهوية موجود بالفعل.';
         } else {
-          winnerDisplay.textContent = "لا يوجد متقدمين للسحب.";
+          alert(`خطأ: ${errorMessage}`);
         }
       });
   });
@@ -98,30 +147,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-
-document.addEventListener("DOMContentLoaded", async function () {
-  const registrationForm = document.getElementById("registrationForm");
-  const customerServiceSelect = document.getElementById("customerService");
-
-  // Load employees into the dropdown
-  async function loadEmployees() {
-    try {
-      const response = await fetch("/api/employees");
-      const employees = await response.json();
-
-      customerServiceSelect.innerHTML = '<option value="">اختر موظف خدمة العملاء</option>';
-      employees.forEach((employee) => {
-        const option = document.createElement("option");
-        option.value = employee.name;
-        option.textContent = employee.name;
-        customerServiceSelect.appendChild(option);
-      });
-    } catch (err) {
-      console.error("Error loading employees:", err);
-    }
-  }
-
-  loadEmployees();
-  // Rest of the registration.js code...
-});
-
