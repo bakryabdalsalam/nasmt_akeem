@@ -11,6 +11,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  direction: rtl; /* Ensure RTL layout */
 }
 
 .container {
@@ -54,7 +55,7 @@ form {
 
 label {
   margin-bottom: 8px;
-  text-align: left;
+  text-align: right; /* Adjusted for RTL */
   font-size: 16px;
 }
 
@@ -67,6 +68,7 @@ select {
   font-size: 16px;
   width: 100%;
   box-sizing: border-box;
+  text-align: right; /* Adjusted for RTL */
 }
 
 input::placeholder,
@@ -77,9 +79,9 @@ select {
 select {
   appearance: none;
   background-color: white;
-  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="16"><path fill="none" stroke="%23333" stroke-width="2" d="M1 4l5 6 5-6"/></svg>');
+  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" transform="scale(-1,1)"><path fill="none" stroke="%23333" stroke-width="2" d="M1 4l5 6 5-6"/></svg>');
   background-repeat: no-repeat;
-  background-position: right 12px center;
+  background-position: left 12px center;
   background-size: 12px 16px;
 }
 
@@ -102,7 +104,7 @@ button:hover {
   color: #ff0000; /* Red color for error messages */
   margin-top: -10px;
   margin-bottom: 10px;
-  text-align: left;
+  text-align: right; /* Adjusted for RTL */
   font-size: 12px;
 }
 
@@ -122,7 +124,7 @@ table th,
 table td {
   padding: 12px;
   border: 1px solid #ddd;
-  text-align: left;
+  text-align: center; /* Adjusted for better alignment */
 }
 
 table th {
@@ -156,9 +158,9 @@ table th {
 #customerServiceFilter {
   appearance: none;
   background-color: white;
-  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="16"><path fill="none" stroke="%23333" stroke-width="2" d="M1 4l5 6 5-6"/></svg>');
+  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" transform="scale(-1,1)"><path fill="none" stroke="%23333" stroke-width="2" d="M1 4l5 6 5-6"/></svg>');
   background-repeat: no-repeat;
-  background-position: right 12px center;
+  background-position: left 12px center;
   background-size: 12px 16px;
 }
 
@@ -182,22 +184,6 @@ table th {
 
 #exportButton:hover {
   background-color: #3771c2; /* Updated hover color */
-}
-
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.checkbox-container input[type="checkbox"] {
-  margin-right: 10px;
-  width: 18px;
-  height: 18px;
-}
-
-.checkbox-container .checkmark {
-  display: none; /* Hide the custom checkmark span, since it's not necessary with this approach */
 }
 
 /* Responsive Styles */
@@ -264,7 +250,14 @@ table th {
   }
 }
 
+/* Add styles for the total users display */
+#totalUsersDisplay {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #333;
+}
 
+/* Styles for Add Employee Form */
 #addEmployeeForm {
   display: flex;
   gap: 10px;
@@ -281,7 +274,7 @@ table th {
 
 #addEmployeeForm button {
   padding: 10px 20px;
-  background-color: #4CAF50;
+  background-color: #4CAF50; /* Adjust color as needed */
   color: white;
   border: none;
   border-radius: 4px;
@@ -293,14 +286,7 @@ table th {
   background-color: #45a049;
 }
 
-#employeesContainer {
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #fff;
-}
-
+/* Styles for Employees Container */
 #employeesContainer {
   margin-top: 20px;
   padding: 15px;
@@ -341,43 +327,7 @@ table th {
   background-color: #d32f2f;
 }
 
-
-/* Existing styles */
-/* ... (Your existing CSS styles) */
-
-/* Style the social media links */
-.social-links {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-}
-
-.social-links a {
-  margin: 0 15px;
-  text-decoration: none;
-  color: #000;
-  font-size: 1.2em;
-  display: flex;
-  align-items: center;
-}
-
-.social-links a i {
-  margin-right: 8px;
-}
-
-.social-links a:hover {
-  color: #007bff;
-}
-
-.social-links a:first-child i {
-  color: #000000; /* TikTok icon color */
-}
-
-.social-links a:last-child i {
-  color: #FFFC00; /* Snapchat icon color */
-}
-
-
+/* Styles for Disabled Buttons */
 button:disabled {
   background-color: #d3d3d3; /* Light grey background */
   color: #888888;           /* Grey text */
@@ -386,13 +336,11 @@ button:disabled {
   border: 1px solid #cccccc; /* Light grey border */
 }
 
-
-/* Style for the follow warning */
-.follow-warning {
+/* Styles for Error Messages */
+.error {
   color: red;
   text-align: center;
   margin-top: 10px;
   margin-bottom: 10px;
-  font-size: 14px; /* Optional, adjust as needed */
+  font-size: 14px;
 }
-
