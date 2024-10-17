@@ -21,6 +21,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const { users, total } = await response.json();
     totalUsers = total;
 
+    // Update the total users display
+    const totalUsersDisplay = document.getElementById("totalUsersDisplay");
+    if (totalUsersDisplay) {
+      totalUsersDisplay.textContent = `إجمالي عدد المشتركين: ${totalUsers}`;
+    }
+
     if (page === 1) {
       usersTable.innerHTML = ""; // Clear table on new search/filter
     }
@@ -46,7 +52,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function handleScroll() {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 && !loading && usersTable.children.length < totalUsers) {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 &&
+      !loading &&
+      usersTable.children.length < totalUsers
+    ) {
       currentPage++;
       loadRegisteredUsers(customerServiceFilter.value, searchInput.value, currentPage);
     }
@@ -74,7 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
     a.click();
     document.body.removeChild(a);
   }
-  
 
   customerServiceFilter.addEventListener("change", () => {
     currentPage = 1;
@@ -91,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
   loadRegisteredUsers();
   exportButton.addEventListener("click", exportToExcel);
 });
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
