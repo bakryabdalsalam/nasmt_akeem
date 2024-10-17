@@ -55,14 +55,16 @@ document.addEventListener("DOMContentLoaded", function () {
   function exportToExcel() {
     const table = document.getElementById("usersTable");
     const rows = Array.from(table.querySelectorAll("tr"));
-    const csvContent = rows
-      .map((row) => {
-        const cols = Array.from(row.querySelectorAll("th, td"));
-        return cols.map((col) => col.textContent).join(",");
-      })
-      .join("\n");
-
-    const blob = new Blob([csvContent], { type: "text/csv" });
+    const csvContent =
+      "\uFEFF" + // Add BOM
+      rows
+        .map((row) => {
+          const cols = Array.from(row.querySelectorAll("th, td"));
+          return cols.map((col) => `"${col.textContent.replace(/"/g, '""')}"`).join(",");
+        })
+        .join("\n");
+  
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.setAttribute("hidden", "");
@@ -72,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
     a.click();
     document.body.removeChild(a);
   }
+  
 
   customerServiceFilter.addEventListener("change", () => {
     currentPage = 1;
