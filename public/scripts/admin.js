@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
           <td>${user.id}</td>
           <td>${user.nationalities}</td>
           <td>${user.customerService}</td>
-          <td>${user.prizeDraw ? "نعم" : "لا"}</td>
         `;
         usersTable.appendChild(row);
       });
