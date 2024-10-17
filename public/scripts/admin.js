@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (loading) return;
 
     loading = true;
-    let query = `/api/users?customerService=${filter}&page=${page}&limit=${limit}&sort=-createdAt`;
+    let query = `/api/users?customerService=${filter}&page=${page}&limit=${limit}`;
     if (searchTerm) {
       query += `&search=${encodeURIComponent(searchTerm)}`;
     }
@@ -28,8 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (users.length === 0 && page === 1) {
       usersTable.innerHTML = "<tr><td colspan='7'>لا توجد نتائج.</td></tr>";
     } else {
-      // Reverse the users array to maintain correct order when inserting at the top
-      users.reverse().forEach((user) => {
+      users.forEach((user) => {
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${user.number !== undefined ? user.number : ''}</td>
@@ -39,8 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <td>${user.nationalities}</td>
           <td>${user.customerService}</td>
         `;
-        // Insert the new row at the top of the table body
-        usersTable.insertBefore(row, usersTable.firstChild);
+        usersTable.appendChild(row);
       });
     }
 
@@ -48,11 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function handleScroll() {
-    if (
-      window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 &&
-      !loading &&
-      usersTable.children.length < totalUsers
-    ) {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 && !loading && usersTable.children.length < totalUsers) {
       currentPage++;
       loadRegisteredUsers(customerServiceFilter.value, searchInput.value, currentPage);
     }
