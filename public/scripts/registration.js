@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     snapchatClicked = true;
     checkLinksClicked();
   });
-
+/*
   // Enable submit button only if both links are clicked
   function checkLinksClicked() {
     if (tiktokClicked && snapchatClicked) {
@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       followWarning.style.display = 'none'; // Hide warning if both links are clicked
     }
   }
-
+*/
   // Add submit event listener to form
   registrationForm.addEventListener("submit", function (event) {
     if (!tiktokClicked || !snapchatClicked) {
