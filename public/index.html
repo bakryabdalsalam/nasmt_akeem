@@ -16,6 +16,7 @@
         أهلا بك ... أحصل على عروض نسمة أكيم بإدخال بياناتك في الأسفل
       </h1>
     </div>
+
     <h1>تسجيل الزوار</h1>
     <form id="registrationForm">
       <label for="name">الاسم:</label>
@@ -41,23 +42,23 @@
       </select>
       <div class="error" id="customerServiceError"></div>
 
-      <!-- Social Media Follow Links -->
-<div class="social-links">
-  <a href="https://www.tiktok.com/@oranse1" target="_blank" id="tiktokLink">
-    <i class="fab fa-tiktok fa-2x"></i> تابعنا على تيك توك
-  </a>
-  <a href="https://www.snapchat.com/add/nesmatakeem" target="_blank" id="snapchatLink">
-    <i class="fab fa-snapchat fa-2x"></i> تابعنا على سناب شات
-  </a>
-</div>
-
-
-      
+      <!-- Social Media Follow Links with QR Codes -->
+      <div class="social-links">
+        <a href="https://www.tiktok.com/@oranse1" target="_blank" id="tiktokLink">
+          <img src="tiktok.png" alt="TikTok QR Code" />
+          تابعنا على تيك توك
+        </a>
+        <a href="https://www.snapchat.com/add/nesmatakeem" target="_blank" id="snapchatLink">
+          <img src="snapchat.png" alt="Snapchat QR Code" />
+          تابعنا على سناب شات
+        </a>
+      </div>
 
       <!-- Submit button initially disabled -->
-      <button type="submit" class="submit-btn" >تسجيل</button>
+      <button type="submit" class="submit-btn">تسجيل</button>
     </form>
   </div>
+
   <script src="scripts/registration.js"></script>
 </body>
 </html>

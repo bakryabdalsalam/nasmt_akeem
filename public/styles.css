@@ -344,28 +344,34 @@ button:disabled {
   margin-bottom: 10px;
   font-size: 14px;
 }
-/* General styles for the social media links */
+/* Social media links and QR codes */
+.social-links {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
 .social-links a {
-  text-decoration: none;
-  font-size: 1.2em;
-  display: inline-block;
+  text-align: center;
+  flex: 1;
   margin: 10px;
-  color: #000; /* Default color for the text */
 }
 
-/* TikTok icon style */
-#tiktokLink i {
-  background: linear-gradient(135deg, #ff0050, #00f2ea, #000000);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.social-links img {
+  max-width: 100px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
-/* Snapchat icon style */
-#snapchatLink i {
-  color: #fffc00; /* Snapchat Yellow */
-}
+/* Responsive QR code images */
+@media (max-width: 600px) {
+  .social-links {
+    flex-direction: column;
+  }
 
-/* Hover effect for links */
-.social-links a:hover {
-  opacity: 0.8;
+  .social-links img {
+    max-width: 70px;
+  }
 }
