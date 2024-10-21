@@ -375,3 +375,34 @@ button:disabled {
     max-width: 70px;
   }
 }
+
+/* Styling for the TikTok and Snapchat links */
+a#tiktokLink, a#snapchatLink {
+  display: block; /* Makes the anchor tags behave like block elements */
+  width: 100%; /* Full width for responsiveness */
+  text-align: center; /* Center the text */
+  padding: 15px; /* Padding for space inside the links */
+  margin: 10px auto; /* Space between the links */
+  background-color: #f9f9f9; /* Light background */
+  color: #333; /* Text color */
+  text-decoration: none; /* Remove underline from links */
+  border-radius: 10px; /* Rounded corners */
+  border: 2px solid #ddd; /* Border for visibility */
+  font-weight: bold; /* Bold text */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effects for the links */
+a#tiktokLink:hover, a#snapchatLink:hover {
+  background-color: #333; /* Darken background on hover */
+  color: #fff; /* Change text color to white */
+  border-color: #555; /* Darken the border */
+}
+
+/* Make the links responsive */
+@media (max-width: 600px) {
+  a#tiktokLink, a#snapchatLink {
+    padding: 10px; /* Adjust padding on small screens */
+    font-size: 14px; /* Reduce font size for mobile */
+  }
+}
