@@ -344,3 +344,28 @@ button:disabled {
   margin-bottom: 10px;
   font-size: 14px;
 }
+/* General styles for the social media links */
+.social-links a {
+  text-decoration: none;
+  font-size: 1.2em;
+  display: inline-block;
+  margin: 10px;
+  color: #000; /* Default color for the text */
+}
+
+/* TikTok icon style */
+#tiktokLink i {
+  background: linear-gradient(135deg, #ff0050, #00f2ea, #000000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Snapchat icon style */
+#snapchatLink i {
+  color: #fffc00; /* Snapchat Yellow */
+}
+
+/* Hover effect for links */
+.social-links a:hover {
+  opacity: 0.8;
+}
