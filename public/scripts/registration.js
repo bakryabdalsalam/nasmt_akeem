@@ -2,30 +2,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   const registrationForm = document.getElementById("registrationForm");
   const customerServiceSelect = document.getElementById("customerService");
   const submitButton = registrationForm.querySelector(".submit-btn");
-  const tiktokLink = document.getElementById("tiktokLink");
-  const snapchatLink = document.getElementById("snapchatLink");
-
-  // Initially disable submit button
-  submitButton.disabled = true;
-
-  let tiktokClicked = false;
-  let snapchatClicked = false;
-
-  tiktokLink.addEventListener("click", function () {
-    tiktokClicked = true;
-    checkLinksClicked();
-  });
-
-  snapchatLink.addEventListener("click", function () {
-    snapchatClicked = true;
-    checkLinksClicked();
-  });
-
-  function checkLinksClicked() {
-    if (tiktokClicked && snapchatClicked) {
-      submitButton.disabled = false;
-    }
-  }
 
   // Load employees into the dropdown
   async function loadEmployees() {
@@ -88,8 +64,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         registrationForm.reset();
         clearErrors();
         submitButton.disabled = true; // Disable submit button again
-        tiktokClicked = false;
-        snapchatClicked = false;
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -147,46 +121,3 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   }
 });
-
-
-
-document.addEventListener("DOMContentLoaded", async function () {
-  const registrationForm = document.getElementById("registrationForm");
-  const submitButton = registrationForm.querySelector(".submit-btn");
-  const tiktokLink = document.getElementById("tiktokLink");
-  const snapchatLink = document.getElementById("snapchatLink");
-  const followWarning = document.getElementById("followWarning"); // Reference to the warning message
-
-  let tiktokClicked = false;
-  let snapchatClicked = false;
-
-  // Track when TikTok link is clicked
-  tiktokLink.addEventListener("click", function () {
-    tiktokClicked = true;
-    checkLinksClicked();
-  });
-
-  // Track when Snapchat link is clicked
-  snapchatLink.addEventListener("click", function () {
-    snapchatClicked = true;
-    checkLinksClicked();
-  });
-/*
-  // Enable submit button only if both links are clicked
-  function checkLinksClicked() {
-    if (tiktokClicked && snapchatClicked) {
-      submitButton.disabled = false; // Enable submit button
-      followWarning.style.display = 'none'; // Hide warning if both links are clicked
-    }
-  }
-*/
-  // Add submit event listener to form
-  registrationForm.addEventListener("submit", function (event) {
-    if (!tiktokClicked || !snapchatClicked) {
-      event.preventDefault(); // Prevent form submission
-      followWarning.style.display = 'block'; // Show the warning message
-    }
-  });
-});
-
-
