@@ -406,3 +406,19 @@ a#tiktokLink:hover, a#snapchatLink:hover {
     font-size: 14px; /* Reduce font size for mobile */
   }
 }
+
+
+/* Styles for the service type checkboxes */
+#serviceTypeContainer {
+  margin-top: 5px;
+}
+
+#serviceTypeContainer label {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+
+#serviceTypeContainer input[type="checkbox"] {
+  margin-right: 5px;
+}

@@ -47,13 +47,18 @@
       <div class="error" id="cityError"></div>
 
       <!-- New Service Type Field -->
-      <label for="serviceType">أستقدام او تدريب:</label>
-      <select id="serviceType" name="serviceType" required>
-        <option value="">اختر نوع الخدمة</option>
-        <option value="استقدام">استقدام</option>
-        <option value="تدريب">تدريب</option>
-      </select>
-      <div class="error" id="serviceTypeError"></div>
+<!-- New Service Type Field -->
+<label>أستقدام او تدريب:</label>
+<div id="serviceTypeContainer">
+  <label>
+    <input type="checkbox" name="serviceType" value="استقدام"> استقدام
+  </label>
+  <label>
+    <input type="checkbox" name="serviceType" value="تدريب"> تدريب
+  </label>
+</div>
+<div class="error" id="serviceTypeError"></div>
+
 
       <label for="nationalities">الجنسيات المطلوبة:</label>
       <input

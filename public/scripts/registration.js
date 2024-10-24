@@ -33,7 +33,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     const id = document.getElementById("id").value.trim();
     const nationalities = document.getElementById("nationalities").value.trim();
     const city = document.getElementById("city").value.trim();
-    const serviceType = document.getElementById("serviceType").value.trim();
+// Collect selected service types
+const serviceTypeElements = document.querySelectorAll("input[name='serviceType']:checked");
+const serviceType = Array.from(serviceTypeElements).map(el => el.value).join(", ");
+
     const customerService = document.getElementById("customerService").value.trim();
 
     clearErrors();
@@ -136,9 +139,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       errors.push({ field: "cityError", message: "المدينة مطلوبة." });
     }
 
-    if (serviceType === "") {
+    if (serviceTypeElements.length === 0) {
       errors.push({ field: "serviceTypeError", message: "نوع الخدمة مطلوب." });
     }
+    
 
     if (customerService === "") {
       errors.push({
