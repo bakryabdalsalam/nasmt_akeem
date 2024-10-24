@@ -7,6 +7,12 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <script>
+    if (localStorage.getItem('authToken') !== 'authenticated') {
+      window.location.href = '/login.html'; // Redirect to login page if not authenticated
+    }
+  </script>
+  
   <div class="container">
     <!-- Manage Customer Service Employees at the Top -->
     <h2>موظفين خدمة العملاء</h2>

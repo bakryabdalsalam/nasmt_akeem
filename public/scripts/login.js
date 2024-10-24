@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("loginForm");
   const formMessage = document.getElementById("formMessage");
 
-  loginForm.addEventListener("submit", function (event) {
+  loginForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
     const username = document.getElementById("username").value.trim();
@@ -10,37 +10,31 @@ document.addEventListener("DOMContentLoaded", function () {
     const usernameError = document.getElementById("usernameError");
     const passwordError = document.getElementById("passwordError");
 
-    usernameError.textContent = "";
-    passwordError.textContent = "";
-    formMessage.textContent = "";
+    // Clear previous error messages
+    usernameError.textContent = '';
+    passwordError.textContent = '';
 
-    if (username === "" || password === "") {
-      if (username === "") {
-        usernameError.textContent = "اسم المستخدم مطلوب.";
-      }
-      if (password === "") {
-        passwordError.textContent = "كلمة المرور مطلوبة.";
-      }
-      return;
-    }
-
-    fetch("/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "same-origin", // Include cookies in the request
-      body: JSON.stringify({ username, password }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          window.location.href = "admin.html";
-        } else {
-          formMessage.textContent = "اسم المستخدم أو كلمة المرور غير صحيحة.";
-        }
-      })
-      .catch(() => {
-        formMessage.textContent = "حدث خطأ أثناء تسجيل الدخول.";
+    // Send login request to the API
+    try {
+      const response = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ inputUsername: username, inputPassword: password }),
       });
+
+      const result = await response.json();
+
+      if (response.status === 200) {
+        // Store authentication token in local storage
+        localStorage.setItem('authToken', result.token);
+        // Redirect to the admin page
+        window.location.href = '/admin.html';
+      } else {
+        // Show error message from the server response
+        formMessage.textContent = result.message;
+      }
+    } catch (error) {
+      formMessage.textContent = 'Error logging in. Please try again later.';
+    }
   });
 });
