@@ -67,14 +67,13 @@ document.addEventListener("DOMContentLoaded", async function () {
       })
       .catch((error) => {
         const errorMessage = error.message;
-        if (errorMessage.includes('phone')) {
-          document.getElementById('phoneError').textContent = 'رقم الجوال موجود بالفعل.';
-        } else if (errorMessage.includes('ID') || errorMessage.includes('id')) {
+        if (errorMessage.includes('ID') || errorMessage.includes('id')) {
           document.getElementById('idError').textContent = 'رقم الهوية موجود بالفعل.';
         } else {
           alert(`خطأ: ${errorMessage}`);
         }
       });
+      
   });
 
   function validateForm(name, phone, id, nationalities, customerService) {

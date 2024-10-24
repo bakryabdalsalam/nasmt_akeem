@@ -48,20 +48,13 @@ module.exports = async function handler(req, res) {
       const { phone, id } = req.body;
 
       // Check for existing user
-      const existingUser = await User.findOne({ $or: [{ phone }, { id }] });
-      if (existingUser) {
-        let errorMsg = 'يوجد مستخدم مسجل بهذا ';
-        if (existingUser.phone === phone && existingUser.id === id) {
-          errorMsg += 'رقم الجوال ورقم الهوية.';
-        } else if (existingUser.phone === phone) {
-          errorMsg += 'رقم الجوال.';
-        } else if (existingUser.id === id) {
-          errorMsg += 'رقم الهوية.';
-        } else {
-          errorMsg += 'رقم الجوال أو رقم الهوية.';
-        }
-        return res.status(400).json({ error: errorMsg });
-      }
+      // Check for existing user
+const existingUser = await User.findOne({ id });
+if (existingUser) {
+  const errorMsg = 'يوجد مستخدم مسجل بهذا رقم الهوية.';
+  return res.status(400).json({ error: errorMsg });
+}
+
 
       // Get the highest number currently in the database
       const highestNumberUser = await User.findOne().sort('-number').exec();
