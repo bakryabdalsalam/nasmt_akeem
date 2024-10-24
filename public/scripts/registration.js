@@ -33,11 +33,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     const id = document.getElementById("id").value.trim();
     const nationalities = document.getElementById("nationalities").value.trim();
     const city = document.getElementById("city").value.trim();
-// Collect selected service types
-const serviceTypeElements = document.querySelectorAll("input[name='serviceType']:checked");
-const serviceType = Array.from(serviceTypeElements).map(el => el.value).join(", ");
-
     const customerService = document.getElementById("customerService").value.trim();
+
+    // Collect selected service types
+    const serviceTypeElements = document.querySelectorAll("input[name='serviceType']:checked");
+    const serviceType = Array.from(serviceTypeElements).map(el => el.value).join(", ");
 
     clearErrors();
 
@@ -47,7 +47,7 @@ const serviceType = Array.from(serviceTypeElements).map(el => el.value).join(", 
       id,
       nationalities,
       city,
-      serviceType,
+      serviceTypeElements,
       customerService
     );
     if (errors.length > 0) {
@@ -105,7 +105,7 @@ const serviceType = Array.from(serviceTypeElements).map(el => el.value).join(", 
     id,
     nationalities,
     city,
-    serviceType,
+    serviceTypeElements,
     customerService
   ) {
     const errors = [];
@@ -142,7 +142,6 @@ const serviceType = Array.from(serviceTypeElements).map(el => el.value).join(", 
     if (serviceTypeElements.length === 0) {
       errors.push({ field: "serviceTypeError", message: "نوع الخدمة مطلوب." });
     }
-    
 
     if (customerService === "") {
       errors.push({
