@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Store authentication token in local storage
         localStorage.setItem('authToken', result.token);
         // Redirect to the admin page
-        window.location.href = '/admin.html';
+        window.location.href = '/index.html';
       } else {
         // Show error message from the server response
         formMessage.textContent = result.message;
