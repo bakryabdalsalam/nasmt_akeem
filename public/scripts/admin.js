@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (users.length === 0 && page === 1) {
-      usersTable.innerHTML = "<tr><td colspan='7'>لا توجد نتائج.</td></tr>";
+      usersTable.innerHTML = "<tr><td colspan='8'>لا توجد نتائج.</td></tr>";
     } else {
       users.forEach((user) => {
         const row = document.createElement("tr");
@@ -43,6 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
           <td>${user.id}</td>
           <td>${user.nationalities}</td>
           <td>${user.customerService}</td>
+          <td>${user.city}</td>
+          <td>${user.serviceType}</td>
         `;
         usersTable.appendChild(row);
       });
@@ -73,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
           return cols.map((col) => `"${col.textContent.replace(/"/g, '""')}"`).join(",");
         })
         .join("\n");
-  
+
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -99,36 +101,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   loadRegisteredUsers();
   exportButton.addEventListener("click", exportToExcel);
-});
 
-
-
-document.addEventListener("DOMContentLoaded", function () {
-  const employeesContainer = document.getElementById("employeesContainer");
-  const addEmployeeForm = document.getElementById("addEmployeeForm");
-
-  // Function to load employees
-  async function loadEmployees() {
+  // Load employees for the filter dropdown
+  async function loadEmployeesForFilter() {
     try {
       const response = await fetch("/api/employees");
       const employees = await response.json();
-  
-      // Update employeesContainer
-      employeesContainer.innerHTML = ""; // Clear current employees
-  
-      employees.forEach((employee) => {
-        const div = document.createElement("div");
-        div.classList.add("employee-item");
-        div.innerHTML = `
-          <span>${employee.name}</span>
-          <button onclick="deleteEmployee('${employee._id}')">حذف</button>
-        `;
-        employeesContainer.appendChild(div);
-      });
-  
-      // Update customerServiceFilter dropdown
-      customerServiceFilter.innerHTML = '<option value="">الكل</option>'; // Reset dropdown
-  
+
+      customerServiceFilter.innerHTML = '<option value="">الكل</option>';
       employees.forEach((employee) => {
         const option = document.createElement("option");
         option.value = employee.name;
@@ -139,7 +119,49 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Error loading employees:", err);
     }
   }
-  
+
+  loadEmployeesForFilter();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const employeesContainer = document.getElementById("employeesContainer");
+  const addEmployeeForm = document.getElementById("addEmployeeForm");
+
+  // Function to load employees
+  async function loadEmployees() {
+    try {
+      const response = await fetch("/api/employees");
+      const employees = await response.json();
+
+      // Update employeesContainer
+      employeesContainer.innerHTML = ""; // Clear current employees
+
+      employees.forEach((employee) => {
+        const div = document.createElement("div");
+        div.classList.add("employee-item");
+        div.innerHTML = `
+          <span>${employee.name}</span>
+          <button onclick="deleteEmployee('${employee._id}')">حذف</button>
+        `;
+        employeesContainer.appendChild(div);
+      });
+
+      // Update customerServiceFilter dropdown
+      const customerServiceFilter = document.getElementById("customerServiceFilter");
+      if (customerServiceFilter) {
+        customerServiceFilter.innerHTML = '<option value="">الكل</option>'; // Reset dropdown
+
+        employees.forEach((employee) => {
+          const option = document.createElement("option");
+          option.value = employee.name;
+          option.textContent = employee.name;
+          customerServiceFilter.appendChild(option);
+        });
+      }
+    } catch (err) {
+      console.error("Error loading employees:", err);
+    }
+  }
 
   // Function to add a new employee
   addEmployeeForm.addEventListener("submit", async function (event) {

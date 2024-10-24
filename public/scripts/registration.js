@@ -9,7 +9,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       const response = await fetch("/api/employees");
       const employees = await response.json();
 
-      customerServiceSelect.innerHTML = '<option value="">اختر موظف خدمة العملاء</option>';
+      customerServiceSelect.innerHTML =
+        '<option value="">اختر موظف خدمة العملاء</option>';
       employees.forEach((employee) => {
         const option = document.createElement("option");
         option.value = employee.name;
@@ -31,19 +32,38 @@ document.addEventListener("DOMContentLoaded", async function () {
     const phone = document.getElementById("phone").value.trim();
     const id = document.getElementById("id").value.trim();
     const nationalities = document.getElementById("nationalities").value.trim();
+    const city = document.getElementById("city").value.trim();
+    const serviceType = document.getElementById("serviceType").value.trim();
     const customerService = document.getElementById("customerService").value.trim();
 
     clearErrors();
 
-    const errors = validateForm(name, phone, id, nationalities, customerService);
+    const errors = validateForm(
+      name,
+      phone,
+      id,
+      nationalities,
+      city,
+      serviceType,
+      customerService
+    );
     if (errors.length > 0) {
       errors.forEach(
-        (error) => (document.getElementById(error.field).textContent = error.message)
+        (error) =>
+          (document.getElementById(error.field).textContent = error.message)
       );
       return;
     }
 
-    const user = { name, phone, id, nationalities, customerService };
+    const user = {
+      name,
+      phone,
+      id,
+      nationalities,
+      city,
+      serviceType,
+      customerService,
+    };
 
     fetch("/api/users", {
       method: "POST",
@@ -55,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       .then(async (response) => {
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.error || 'Unknown error');
+          throw new Error(errorData.error || "Unknown error");
         }
         return response.json();
       })
@@ -67,16 +87,24 @@ document.addEventListener("DOMContentLoaded", async function () {
       })
       .catch((error) => {
         const errorMessage = error.message;
-        if (errorMessage.includes('ID') || errorMessage.includes('id')) {
-          document.getElementById('idError').textContent = 'رقم الهوية موجود بالفعل.';
+        if (errorMessage.includes("ID") || errorMessage.includes("id")) {
+          document.getElementById("idError").textContent =
+            "رقم الهوية موجود بالفعل.";
         } else {
           alert(`خطأ: ${errorMessage}`);
         }
       });
-      
   });
 
-  function validateForm(name, phone, id, nationalities, customerService) {
+  function validateForm(
+    name,
+    phone,
+    id,
+    nationalities,
+    city,
+    serviceType,
+    customerService
+  ) {
     const errors = [];
 
     if (name === "") {
@@ -102,6 +130,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         field: "nationalitiesError",
         message: "الجنسيات المطلوبة مطلوبة.",
       });
+    }
+
+    if (city === "") {
+      errors.push({ field: "cityError", message: "المدينة مطلوبة." });
+    }
+
+    if (serviceType === "") {
+      errors.push({ field: "serviceTypeError", message: "نوع الخدمة مطلوب." });
     }
 
     if (customerService === "") {

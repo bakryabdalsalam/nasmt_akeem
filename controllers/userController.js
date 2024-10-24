@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema({
   nationalities: String,
   customerService: String,
   number: Number,
+  city: String,
+  serviceType: String,
 });
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
@@ -17,7 +19,12 @@ module.exports = async function handler(req, res) {
     await mongoose.connect(process.env.MONGODB_URI);
 
     if (req.method === 'GET') {
-      const { page = 1, limit = 10, customerService = '', search = '' } = req.query;
+      const {
+        page = 1,
+        limit = 10,
+        customerService = '',
+        search = '',
+      } = req.query;
 
       // Build query conditions
       const queryConditions = {};
@@ -30,6 +37,8 @@ module.exports = async function handler(req, res) {
           { phone: { $regex: search, $options: 'i' } },
           { id: { $regex: search, $options: 'i' } },
           { nationalities: { $regex: search, $options: 'i' } },
+          { city: { $regex: search, $options: 'i' } },
+          { serviceType: { $regex: search, $options: 'i' } },
           { number: Number(search) }, // Searching by number directly
         ];
       }
@@ -65,7 +74,10 @@ module.exports = async function handler(req, res) {
 
       // Get the highest number currently in the database
       const highestNumberUser = await User.findOne().sort('-number').exec();
-      const newNumber = highestNumberUser && highestNumberUser.number ? highestNumberUser.number + 1 : 1;
+      const newNumber =
+        highestNumberUser && highestNumberUser.number
+          ? highestNumberUser.number + 1
+          : 1;
 
       const newUser = new User({
         ...req.body,

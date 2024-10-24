@@ -12,12 +12,17 @@
       window.location.href = '/login.html'; // Redirect to login page if not authenticated
     }
   </script>
-  
+
   <div class="container">
     <!-- Manage Customer Service Employees at the Top -->
     <h2>موظفين خدمة العملاء</h2>
     <form id="addEmployeeForm">
-      <input type="text" id="employeeName" placeholder="أدخل اسم موظف خدمة العملاء" required />
+      <input
+        type="text"
+        id="employeeName"
+        placeholder="أدخل اسم موظف خدمة العملاء"
+        required
+      />
       <button type="submit">أضافة موظف خدمة عملاء</button>
     </form>
     <div id="employeesContainer"></div>
@@ -34,7 +39,11 @@
     <div class="filter-search-container">
       <div class="search-field">
         <label for="searchInput">البحث:</label>
-        <input type="text" id="searchInput" placeholder="ابحث بالاسم، رقم الجوال، رقم الهوية، الرقم، أو الجنسيات المطلوبة" />
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="ابحث بالاسم، رقم الجوال، رقم الهوية، الرقم، الجنسيات المطلوبة، المدينة، أو نوع الخدمة"
+        />
       </div>
 
       <div class="filter-field">
@@ -56,6 +65,8 @@
             <th>رقم الهوية السعودية</th>
             <th>الجنسيات المطلوبة</th>
             <th>موظف خدمة العملاء</th>
+            <th>المدينة</th>
+            <th>نوع الخدمة</th>
           </tr>
         </thead>
         <tbody></tbody>

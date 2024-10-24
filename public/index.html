@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>تسجيل الزوار</title>
   <!-- Include Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -14,7 +17,7 @@
       window.location.href = '/login.html'; // Redirect to login page if not authenticated
     }
   </script>
-  
+
   <div class="container">
     <div class="header">
       <img src="logo.webp" alt="Logo" class="logo" />
@@ -38,8 +41,28 @@
       <div class="error" id="idError"></div>
 
       <label for="nationalities">الجنسيات المطلوبة:</label>
-      <input type="text" id="nationalities" name="nationalities" placeholder="أدخل الجنسيات المطلوبة" required />
+      <input
+        type="text"
+        id="nationalities"
+        name="nationalities"
+        placeholder="أدخل الجنسيات المطلوبة"
+        required
+      />
       <div class="error" id="nationalitiesError"></div>
+
+      <!-- New City Field -->
+      <label for="city">المدينة:</label>
+      <input type="text" id="city" name="city" placeholder="أدخل المدينة" required />
+      <div class="error" id="cityError"></div>
+
+      <!-- New Service Type Field -->
+      <label for="serviceType">أستقدام او تدريب:</label>
+      <select id="serviceType" name="serviceType" required>
+        <option value="">اختر نوع الخدمة</option>
+        <option value="استقدام">استقدام</option>
+        <option value="تدريب">تدريب</option>
+      </select>
+      <div class="error" id="serviceTypeError"></div>
 
       <label for="customerService">موظف خدمة العملاء:</label>
       <select id="customerService" name="customerService" required>
