@@ -33,14 +33,18 @@ module.exports = async function handler(req, res) {
       }
       if (search) {
         queryConditions.$or = [
-          { name: { $regex: search, $options: 'i' } },
-          { phone: { $regex: search, $options: 'i' } },
-          { id: { $regex: search, $options: 'i' } },
-          { nationalities: { $regex: search, $options: 'i' } },
-          { city: { $regex: search, $options: 'i' } },
-          { serviceType: { $regex: search, $options: 'i' } },
-          { number: Number(search) },
+          { name: { $regex: search } },
+          { phone: { $regex: search } },
+          { id: { $regex: search } },
+          { nationalities: { $regex: search } },
+          { city: { $regex: search } },
+          { serviceType: { $regex: search } },
         ];
+
+        const searchNumber = Number(search);
+        if (!isNaN(searchNumber)) {
+          queryConditions.$or.push({ number: searchNumber });
+        }
       }
 
       // Calculate total users for pagination with collation
