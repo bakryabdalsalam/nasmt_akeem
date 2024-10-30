@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const customerServiceFilter = document.getElementById("customerServiceFilter");
   const searchInput = document.getElementById("searchInput");
   let currentPage = 1;
-  const limit = 10;
+  const limit = 50;
   let loading = false;
   let totalUsers = 0;
 

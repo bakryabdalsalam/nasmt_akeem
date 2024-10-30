@@ -21,7 +21,7 @@ module.exports = async function handler(req, res) {
     if (req.method === 'GET') {
       const {
         page = 1,
-        limit = 10,
+        limit = 50,
         customerService = '',
         search = '',
       } = req.query;
