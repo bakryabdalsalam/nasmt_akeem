@@ -39,15 +39,16 @@ module.exports = async function handler(req, res) {
           { nationalities: { $regex: search, $options: 'i' } },
           { city: { $regex: search, $options: 'i' } },
           { serviceType: { $regex: search, $options: 'i' } },
-          { number: Number(search) }, // Searching by number directly
+          { number: Number(search) },
         ];
       }
 
-      // Calculate total users for pagination
-      const total = await User.countDocuments(queryConditions);
+      // Calculate total users for pagination with collation
+      const total = await User.countDocuments(queryConditions).collation({ locale: 'ar', strength: 2 });
 
-      // Fetch users with pagination and sorting
+      // Fetch users with pagination, sorting, and collation
       const users = await User.find(queryConditions)
+        .collation({ locale: 'ar', strength: 2 })
         .sort({ number: 1 })
         .skip((page - 1) * limit)
         .limit(parseInt(limit));
